@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func setup() (TrieTree,error){
+func setup() (TrieTree TrieTree,err error){
 	var spell_list []string
 	spell, err := os.Open("./pinyin_spell.txt")
 	if err != nil {
@@ -19,7 +19,7 @@ func setup() (TrieTree,error){
 	for {
 		a, _, c := br.ReadLine()
 		if c == io.EOF {
-			return err
+			log.err("read from file error"error.Error())
 		}
 		spell_list = append(spell_list,string(a))
 
