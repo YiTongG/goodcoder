@@ -11,7 +11,7 @@ type TrieTree struct {
 	root *TrieNode
 }
 
-func CreateTree(arrList []string) TrieTree {
+func CreateTree(arrList []string) (TrieTree) {
 	myTree := TrieTree{}
 	//添加根节点
 	myTree.root = &TrieNode{}

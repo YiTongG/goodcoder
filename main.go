@@ -14,11 +14,10 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
+	"icode.baidu.com/baidu/goodcoder/gongyitong/method"
 	"os"
 	//"path/filepath"
 	"strings"
-	"icode.baidu.com/baidu/goodcoder/gongyitong/method"
 )
 
 type InputMethod interface {
@@ -38,26 +37,7 @@ func loop(im InputMethod) {
 	}
 }
 //建立全部合法拼音的字典树，用于判断词典名、拼音名是否合法
-func setup() method.TrieTree{
-	var spell_list []string
-	spell, err := os.Open("./pinyin_spell.txt")
-	if err != nil {
-		fmt.Printf("Error: %s\n", err)
-		}
-	defer spell.Close()
 
-	br := bufio.NewReader(spell)
-	for {
-		a, _, c := br.ReadLine()
-		if c == io.EOF {
-			break
-		}
-		spell_list = append(spell_list,string(a))
-
-	}
-	spellTree := method.CreateTree(spell_list)
-	return spellTree
-}
 	//var dictpath = "./dict"
 	//var dict_list []string
 	//files,_ := filepath.Glob(dictpath+"/*")
@@ -68,7 +48,9 @@ func setup() method.TrieTree{
 
 func main() {
 	// 若实现加载指定目录下全部词典，并判断词典名是否合法
-    setup()
-
+	 spellTree,err := method.setup()
+	if err != nil {
+		break
+	}
 
 }
