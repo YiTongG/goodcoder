@@ -14,17 +14,19 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"icode.baidu.com/baidu/goodcoder/gongyitong/method"
+	"icode.baidu.com/baidu/goodcoder/gongyitong/method/input"
+	"icode.baidu.com/baidu/goodcoder/gongyitong/constants"
+	"icode.baidu.com/baidu/goodcoder/gongyitong/method/log"
+
 	"os"
 	//"path/filepath"
 	"strings"
 )
 
-type InputMethod interface {
-	FindWords(string) []string
-}
-
-func loop(im InputMethod) {
+func main() {
+	// 若实现加载指定目录下全部词典，并判断词典名是否合法
+	log.SetEnv(constants.ENV_DEVBOX)
+	log.SetDebugMode(true)
 	stdin := bufio.NewReader(os.Stdin)
 	for {
 		spell, err := stdin.ReadString('\n')
@@ -32,25 +34,7 @@ func loop(im InputMethod) {
 			break
 		}
 		spell = strings.TrimRight(spell, "\n")
-		words := im.FindWords(spell)
+		words := input.FindWords(spell)
 		fmt.Println(strings.Join(words, ", "))
 	}
-}
-//建立全部合法拼音的字典树，用于判断词典名、拼音名是否合法
-
-	//var dictpath = "./dict"
-	//var dict_list []string
-	//files,_ := filepath.Glob(dictpath+"/*")
-	//检查是否拼音+，.dat格式
-
-	//fmt.Println(files) // contains a list of all files in the current directory
-
-
-func main() {
-	// 若实现加载指定目录下全部词典，并判断词典名是否合法
-	 spellTree,err := method.setup()
-	if err != nil {
-		break
-	}
-
 }
