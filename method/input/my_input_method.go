@@ -9,15 +9,13 @@ import (
 	"os"
 	"regexp"
 )
-
 func BuildSpellTree(filename string) tree.Trie {
-	spellTree,err := tree.InitTree(filename)
+	spellTree, err := tree.InitTree(filename)
 	if err != nil {
-		log.Err("init failed Error:%v\n",err)
+		log.Err("init failed Error:%v\n", err)
 	}
 	return spellTree
 }
-
 
 //建立一个包含所有拼音的字典树，用于快速校验输入是否合法
 var pinyin = "./pinyin_spell.txt"
@@ -27,14 +25,14 @@ func FindWords(spell string) []string {
 	if !spellTree.StartsWith(spell) {
 		return nil
 	}
-	wordlist := readFromCache(spell)
+	wordlist := readFromHistory(spell)
 	if wordlist == nil {
 		wordlist = fetchWordList(spell)
 	}
 	return file.ChineseList(wordlist)
 }
 
-func readFromCache(spell string) []file.Word {
+func readFromHistory(spell string) []file.Word {
 	filename, err := file.FileName("./history")
 	if err != nil {
 		log.Err("")
@@ -46,7 +44,7 @@ func readFromCache(spell string) []file.Word {
 	}
 	return nil
 }
-func fetchWordList (spell string) []file.Word{
+func fetchWordList(spell string) []file.Word {
 	var filelist []string
 	filename, err := file.FileName("./dict")
 	if err != nil {
@@ -72,11 +70,9 @@ func fetchWordList (spell string) []file.Word{
 	//tree := tree.InitWordTree(filelist)
 
 	sortword := file.SortWordList(wordlist)
-	writeCache(sortword,spell)
+	writeCache(sortword, spell)
 	return sortword
 }
-
-
 
 func writeCache(wordlist []file.Word, spell string) {
 	for _, tmp := range wordlist {
@@ -91,20 +87,19 @@ func writeCache(wordlist []file.Word, spell string) {
 		}
 		defer f.Close()
 		rd := bufio.NewWriter(f)
-		for {
-			_, err := rd.WriteString(tmp.Chinese + " ")
-			if err == io.EOF {
-				break
-			}
-			_, err = rd.WriteRune(tmp.Frequency)
-			if err == io.EOF {
-				break
-			}
-			_, err = rd.WriteString("\n")
-			if err == io.EOF {
-				break
-			}
 
+		_, err = rd.WriteString(tmp.Chinese + " ")
+		if err == io.EOF {
+			break
 		}
+		_, err = rd.WriteRune(tmp.Frequency)
+		if err == io.EOF {
+			break
+		}
+		_, err = rd.WriteString("\n")
+		if err == io.EOF {
+			break
+		}
+
 	}
 }
