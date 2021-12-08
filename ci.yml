@@ -1,20 +1,28 @@
 Global:
-    version: 2.0
+  mode: AGENT
+  version: 2.0
 
 Default:
-    profile : [build]
+  profile: [image_register,auto_check]
 
 Profiles:
-    - profile:
-      name : build
-      mode: AGENT
-      environment:
-        image: DECK_CENTOS6U3_K3
-        resourceType: SMALL
-      build:
-        command: bash build.sh
-      check:
-        - reuse: TASK
-          enable: true
-      artifacts:
-        release: true
+  - profile:
+    name : auto_check
+    mode: AGENT
+    environment:
+      image: iregistry.baidu-int.com/goodcoder-go/centos6u3/pingyin-spell:v2.2.2
+      resourceType: SMALL
+    build:
+      command: auto_check
+    check:
+      - reuse: TASK
+        enable: true
+    artifacts:
+      release: true
+
+  - profile:
+    name: image_register
+    mode: AGENT_FOR_IMAGE_REGISTER
+    group_mail: xxx@baidu.com
+    images:
+      - image: iregistry.baidu-int.com/goodcoder-go/centos6u3/pingyin-spell:v2.2.2
