@@ -9,24 +9,24 @@ modification history
 */
 
 
+/*
+gongyitong@baidu.com, create
+*/
+
 package main
 
 import (
 	"bufio"
 	"fmt"
-	"icode.baidu.com/baidu/goodcoder/gongyitong/method/input"
-	"icode.baidu.com/baidu/goodcoder/gongyitong/constants"
-	"icode.baidu.com/baidu/goodcoder/gongyitong/method/log"
-
+	"icode.baidu.com/baidu/goodcoder/gongyitong/method"
 	"os"
-	//"path/filepath"
 	"strings"
 )
 
-func main() {
-	// 若实现加载指定目录下全部词典，并判断词典名是否合法
-	log.SetEnv(constants.ENV_DEVBOX)
-	log.SetDebugMode(true)
+// SpellTree 包含全部拼音的树，用于校验
+
+// loop 循环读取输入拼音
+func loop(im method.MyInputMethod) {
 	stdin := bufio.NewReader(os.Stdin)
 	for {
 		spell, err := stdin.ReadString('\n')
@@ -34,7 +34,20 @@ func main() {
 			break
 		}
 		spell = strings.TrimRight(spell, "\n")
-		words := input.FindWords(spell)
+		words := im.FindWords(spell)
 		fmt.Println(strings.Join(words, ", "))
 	}
+
+}
+
+// main 实现加载指定目录下全部词典，并判断词典名是否合法
+func main() {
+	//log.SetEnv(constants.EnvDevbox)
+	//log.SetDebugMode(true)
+	im := method.NewInputMethod(os.Args[1:])
+	//args := []string{"./your-goodcoder-code", "./dict/zhan.dat", "./dict/zhang.dat", "./dict/zha.dat"}
+	//im := method.NewInputMethod(args[1:], SpellTree)
+
+	loop(im)
+
 }
